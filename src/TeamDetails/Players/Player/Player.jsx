@@ -8,7 +8,12 @@ class Player extends Component {
   constructor(props) {
     super(props);
     const { player } = this.props;
-    this.state = { player: player, isEditing: false };
+
+    let isEditing = false;
+    if (!player.name && !player.position) {
+      isEditing = true;
+    }
+    this.state = { player, isEditing };
   }
 
   shouldComponentUpdate(nextProps) {
@@ -27,8 +32,14 @@ class Player extends Component {
   };
 
   cancelEdition = () => {
-    const { player } = this.props;
-    this.setState({ player: player, isEditing: false });
+    const { player, onDelete, index } = this.props;
+
+    // If player did not have a name and position (ie. he has been created locally), delete it
+    if (!player.name && !player.position) {
+      onDelete(index);
+    } else {
+      this.setState({ player: player, isEditing: false });
+    }
   };
 
   editPlayerName = event => {
@@ -52,10 +63,10 @@ class Player extends Component {
   };
 
   onSaveHandler = () => {
-    const { onSave } = this.props;
+    const { onSave, index } = this.props;
     const { player } = this.state;
 
-    onSave(player);
+    onSave(player, index);
     this.setState({ isEditing: false });
   };
 
@@ -88,7 +99,7 @@ class Player extends Component {
 
   renderReadMode() {
     const { onDelete } = this.props;
-    const { player } = this.state;
+    const { player, index } = this.state;
 
     return (
       <Fragment>
@@ -103,7 +114,7 @@ class Player extends Component {
           <IconButton
             aria-label="Delete"
             onClick={() => {
-              onDelete(player);
+              onDelete(index);
             }}
           >
             <Delete />

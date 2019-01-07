@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import { Button } from '@material-ui/core';
+import React, { Component, Fragment } from 'react';
 import { SubTitle } from '../../wrappers/text';
 import Player from './Player/Player';
 import { PlayersContainer } from './style';
@@ -25,17 +26,21 @@ class Players extends Component {
       });
   }
 
-  editPlayer = player => {
+  editPlayer = (player, index) => {
     const { players } = this.state;
-    const indexToDelete = players.findIndex(p => player.id === p.id);
-    players.splice(indexToDelete, 1, player);
+    players.splice(index, 1, player);
     this.setState({ players });
   };
 
-  deletePlayer = player => {
+  deletePlayer = index => {
     const { players } = this.state;
-    const indexToDelete = players.findIndex(p => player.id === p.id);
-    players.splice(indexToDelete, 1);
+    players.splice(index, 1);
+    this.setState({ players });
+  };
+
+  addPlayer = () => {
+    const { players } = this.state;
+    players.push({ id: 0, name: '', position: '' });
     this.setState({ players });
   };
 
@@ -43,22 +48,26 @@ class Players extends Component {
     const { players } = this.state;
 
     return (
-      <div>
+      <Fragment>
         <SubTitle>Players</SubTitle>
 
         <PlayersContainer>
-          {players.map(player => {
+          {players.map((player, index) => {
             return (
               <Player
-                key={`player-${player.id}`}
+                key={`player-${index}`}
                 player={player}
+                index={index}
                 onDelete={this.deletePlayer}
                 onSave={this.editPlayer}
               />
             );
           })}
         </PlayersContainer>
-      </div>
+        <Button variant="contained" color="primary" onClick={this.addPlayer}>
+          Add player
+        </Button>
+      </Fragment>
     );
   }
 }
