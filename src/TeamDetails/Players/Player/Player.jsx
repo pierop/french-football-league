@@ -98,8 +98,8 @@ class Player extends Component {
   }
 
   renderReadMode() {
-    const { onDelete } = this.props;
-    const { player, index } = this.state;
+    const { onDelete, index } = this.props;
+    const { player } = this.state;
 
     return (
       <Fragment>
