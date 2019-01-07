@@ -22,7 +22,7 @@ const TeamWrapper = styled.div`
 `;
 
 const TeamHeader = styled(FlexContainer)`
-  padding: 1rem;
+  padding: 1rem 0;
 `;
 
 const TeamName = styled(Title)`
